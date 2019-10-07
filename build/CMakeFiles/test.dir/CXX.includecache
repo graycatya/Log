@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/code/Log-master/CatLog.cpp
+CatLog.h
+D:/code/Log-master/CatLog.h
+
+D:/code/Log-master/CatLog.h
+thread
+-
+mutex
+-
+condition_variable
+-
+functional
+-
+iostream
+-
+fstream
+-
+string
+-
+queue
+-
+chrono
+-
+
+D:/code/Log-master/main.cpp
+CatLog.h
+D:/code/Log-master/CatLog.h
+iostream
+-
+thread
+-
+
