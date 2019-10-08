@@ -1,7 +1,7 @@
 # Log version: CatLog_0.1
 
 ```
-#include "CatLog.hpp"
+#include "CatLog.h"
 #include <iostream>
 #include <thread>
 int main()
