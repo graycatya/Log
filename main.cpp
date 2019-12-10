@@ -1,58 +1,76 @@
-#include "Log.h"
+#include "CatLog.h"
 #include <iostream>
 #include <thread>
 int main()
 {
 
-    Log* Logs = Log::Instance();
-    Log::InIt_Consumer_Thread(Log::WRITE_FILE);
-    Log::InIt_Consumer_Thread(Log::WRITE_FILE, "demo");
-    Log::InIt_Consumer_Thread(Log::WRITE_FILE, "cat");
-    Log::InIt_Consumer_Thread(Log::WRITE_FILE, "bbq");
-    Log::InIt_Consumer_Thread(Log::WRITE_FILE, "bbc");
+    CatLog* Logs = CatLog::Instance();
+    CatLog::InIt_Consumer_Thread("main", CatLog::WRITE_FILE);
+    CatLog::InIt_Consumer_Thread("demo", CatLog::WRITE_FILE);
+    CatLog::InIt_Consumer_Thread("cat", CatLog::WRITE_FILE);
+    CatLog::InIt_Consumer_Thread("bbq", CatLog::WRITE_FILE);
+    CatLog::InIt_Consumer_Thread("bbc", CatLog::WRITE_FILE);
+    CatLog::InIt_Consumer_Thread("break", CatLog::PRINTF);
+    CatLog::InIt_Consumer_Thread("xxxxx", CatLog::WRITE_FILE);
     std::thread th([](){
         for(int i = 0; i < 1000; i++)
         {
-            Log* Logs = Log::Instance();
-            Logs->AddLog_Detailed("main", Log::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CatLog* Logs = CatLog::Instance();
+            Logs->AddLog_Detailed("main", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
         }
     });
     
     std::thread thdemo([](){
         for(int i = 0; i < 1000; i++)
         {
-            Log* Logs = Log::Instance();
-            Logs->AddLog_Detailed("demo", Log::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CatLog* Logs = CatLog::Instance();
+            Logs->AddLog_Detailed("demo", CatLog::LEVEL_ALARM,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
         }
     });
     
     std::thread thcat([](){
         for(int i = 0; i < 1000; i++)
         {
-            Log* Logs = Log::Instance();
-            Logs->AddLog_Detailed("cat", Log::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CatLog* Logs = CatLog::Instance();
+            Logs->AddLog_Detailed("cat", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
         }
     });
 
     std::thread thbbq([](){
         for(int i = 0; i < 1000; i++)
         {
-            Log* Logs = Log::Instance();
-            Logs->AddLog_Detailed("bbq", Log::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CatLog* Logs = CatLog::Instance();
+            Logs->AddLog_Detailed("bbq", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
         }
     });
 
     std::thread thbbc([](){
         for(int i = 0; i < 1000; i++)
         {
-            Log* Logs = Log::Instance();
-            Logs->AddLog_Detailed("bbc", Log::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CatLog* Logs = CatLog::Instance();
+            Logs->AddLog_Detailed("bbc", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+        }
+    });
+
+    std::thread thbreak([](){
+        for(int i = 0; i < 1000; i++)
+        {
+            CatLog* Logs = CatLog::Instance();
+            Logs->AddLog_Detailed("break", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+        }
+    });
+
+    std::thread thxxxxx([](){
+        for(int i = 0; i < 1000; i++)
+        {
+            CatLog* Logs = CatLog::Instance();
+            Logs->AddLog("xxxxx", CatLog::LEVEL_DEBUG, "CATLOG this thread log %d %s", i, "...");
         }
     });
     
     for(int i = 0; i < 1000; i++)
     {
-        Logs->AddLog_Detailed("main", Log::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this log %d %s", i, "...");
+        Logs->AddLog_Detailed("main", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this log %d %s", i, "...");
     }
     
 
@@ -61,7 +79,9 @@ int main()
     thcat.join();
     thbbq.join();
     thbbc.join();
-    Log::Delete();
+    thbreak.join();
+    thxxxxx.join();
+    CatLog::Delete();
 
     return 0;
 }
