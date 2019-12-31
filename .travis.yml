@@ -1,0 +1,33 @@
+---
+language: python
+python: "3.6"
+
+# Use the new container infrastructure
+sudo: false
+
+# Install ansible
+addons:
+  apt:
+    packages:
+    - python3-pip
+    - openssh-server
+    - cmake 
+    - make 
+
+
+install:
+  # Install ansible
+  - pip3 install ansible
+
+  # Check ansible version
+  - ansible --version
+
+  # Create ansible.cfg with correct roles_path
+  - printf '[defaults]\nroles_path=../' >ansible.cfg
+
+script:
+  # Basic role syntax check
+  - ls
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
