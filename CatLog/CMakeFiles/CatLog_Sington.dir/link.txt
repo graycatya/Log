@@ -1,0 +1,3 @@
+"C:\Program Files\cmake-3.15.1-win64-x64\cmake-3.15.1-win64-x64\bin\cmake.exe" -E remove -f CMakeFiles\CatLog_Sington.dir/objects.a
+D:\software\qt5.13\Tools\mingw730_64\bin\ar.exe cr CMakeFiles\CatLog_Sington.dir/objects.a @CMakeFiles\CatLog_Sington.dir\objects1.rsp
+D:\software\qt5.13\Tools\mingw730_64\bin\g++.exe    -shared -o libCatLog_Sington.dll -Wl,--out-implib,libCatLog_Sington.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -Wl,--whole-archive CMakeFiles\CatLog_Sington.dir/objects.a -Wl,--no-whole-archive @CMakeFiles\CatLog_Sington.dir\linklibs.rsp

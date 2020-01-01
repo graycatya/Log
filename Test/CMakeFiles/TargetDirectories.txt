@@ -1,0 +1,3 @@
+D:/code/Log/Test/CMakeFiles/Logdemo.dir
+D:/code/Log/Test/CMakeFiles/edit_cache.dir
+D:/code/Log/Test/CMakeFiles/rebuild_cache.dir

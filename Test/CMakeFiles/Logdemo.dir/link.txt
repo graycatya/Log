@@ -1,0 +1,3 @@
+"C:\Program Files\cmake-3.15.1-win64-x64\cmake-3.15.1-win64-x64\bin\cmake.exe" -E remove -f CMakeFiles\Logdemo.dir/objects.a
+D:\software\qt5.13\Tools\mingw730_64\bin\ar.exe cr CMakeFiles\Logdemo.dir/objects.a @CMakeFiles\Logdemo.dir\objects1.rsp
+D:\software\qt5.13\Tools\mingw730_64\bin\g++.exe    -Wl,--whole-archive CMakeFiles\Logdemo.dir/objects.a -Wl,--no-whole-archive  -o Logdemo.exe -Wl,--out-implib,libLogdemo.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Logdemo.dir\linklibs.rsp
