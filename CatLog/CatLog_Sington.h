@@ -48,7 +48,7 @@ class CatLog
             return _instance;
         }
 
-        static void Delete( void )
+        static void Delete( void ) noexcept
         {
             {
                 std::unique_lock<std::mutex> lock(*m_pMutex);
@@ -93,16 +93,18 @@ class CatLog
         }
 
         template<class F, class... Args>
-        static void enqueue(F&& f, Args&&... args)
+        static void enqueue(F&& f, Args&&... args) noexcept
         {
-            using return_type = typename std::result_of<F(Args...)>::type;
+            /*using return_type = typename std::result_of<F(Args...)>::type;
             
             auto task = std::make_shared< std::packaged_task<return_type()> >(
                     std::bind(std::forward<F>(f), std::forward<Args>(args)...)
-                );
+                );*/
+            auto task = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
+
             {
                 std::unique_lock<std::mutex>lock(*m_pConsumer_Mutex);
-                m_pLogMsg->emplace([task](){ (*task)(); });
+                m_pLogMsg->emplace(task);
             }
             m_pCondition->notify_one();
         }

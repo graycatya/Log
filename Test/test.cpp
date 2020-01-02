@@ -39,6 +39,12 @@ int main()
             CATLOG::__Write_Log("./test4", __ALARM_LOG("log: " + std::to_string(i)));
         }
     });
+    std::thread thread_test_5([]{
+        for(int i = 0; i < NUM; i++)
+        {
+            CATLOG::__Write_Log("./test5", __ALARM_LOG("log: " + std::to_string(i)));
+        }
+    });
     for(int i = 0; i < NUM; i++)
     {
         CATLOG::__Write_Log(_INFO_LOG("log: " + std::to_string(i)));
@@ -48,6 +54,7 @@ int main()
     thread_test_2.join();
     thread_test_3.join();
     thread_test_4.join();
+    thread_test_5.join();
     CatLog::Delete();
     return 0;
 }
