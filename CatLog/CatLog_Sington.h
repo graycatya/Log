@@ -11,26 +11,8 @@
 #include <map>
 #include <chrono>
 
-#define LOG_FILE(__FILE_PATH, __LOG_MSG) ( \
-    { \
-        CatLog::enqueue([__FILE_PATH, __LOG_MSG](){ \
-            std::string file_path = __FILE_PATH + ".log"; \
-            std::ofstream outfile; \
-            outfile.open(file_path, std::ios::out | std::ios::app ); \
-            outfile << logs->msg << std::endl; \
-            outfile.close(); \
-        }); \
-    } \
-)
-
-#define LOG_PRINTF(__LOG_MSG) ( \
-    { \
-        CatLog::enqueue([__LOG_MSG](){ \
-            std::cout << __LOG_MSG << std::endl; \
-            std::cout.flush(); \
-        }); \
-    } \
-)
+namespace CATLOG
+{
 
 class CatLog
 {
@@ -47,7 +29,7 @@ class CatLog
                     m_pConsumer_Thread = new std::thread([]{
                         while(!m_bThreadStop)
                         {
-                            std::unique_lock<std::mutex> lock(*m_pMutex);
+                            std::unique_lock<std::mutex> lock(*m_pConsumer_Mutex);
                             if(!m_pLogMsg->empty())
                             {
                                 std::function<void()> task;
@@ -76,7 +58,7 @@ class CatLog
                 }
                 m_bThreadStop = true;
             }
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            //std::this_thread::sleep_for(std::chrono::milliseconds(200));
             m_pCondition->notify_one();
             m_pConsumer_Thread->join();
             if(m_pConsumer_Thread != nullptr)
@@ -88,6 +70,11 @@ class CatLog
             {
                 delete m_pMutex;
                 m_pMutex = nullptr;
+            }
+            if(m_pConsumer_Mutex != nullptr)
+            {
+                delete m_pConsumer_Mutex;
+                m_pConsumer_Mutex = nullptr;
             }
             if(m_pCondition != nullptr)
             {
@@ -115,7 +102,7 @@ class CatLog
                     std::bind(std::forward<F>(f), std::forward<Args>(args)...)
                 );
             {
-                std::unique_lock<std::mutex>lock(m_pMutex);
+                std::unique_lock<std::mutex>lock(*m_pConsumer_Mutex);
                 m_pLogMsg->emplace([task](){ (*task)(); });
             }
             m_pCondition->notify_one();
@@ -125,11 +112,35 @@ class CatLog
     private:
         CatLog() {}
         ~CatLog() {}
+        CatLog(const CatLog*) = delete;
 
         static CatLog* _instance;
         static std::mutex* m_pMutex;
+        static std::mutex* m_pConsumer_Mutex;
         static std::condition_variable* m_pCondition;
         static std::thread* m_pConsumer_Thread;
         static std::queue<std::function<void()>> *m_pLogMsg;
         static bool m_bThreadStop;
+};
+
+
+void __Write_Log(std::string&& __FILE_PATH, std::string&& __LOG_MSG)
+{
+        CatLog::enqueue([__FILE_PATH, __LOG_MSG](){ 
+            std::string file_path = __FILE_PATH + ".log"; 
+            std::ofstream outfile; 
+            outfile.open(file_path, std::ios::out | std::ios::app ); 
+            outfile << __LOG_MSG << std::endl; 
+            outfile.close(); 
+        }); 
+}
+
+void __Write_Log(std::string&& __LOG_MSG)
+{
+        CatLog::enqueue([__LOG_MSG](){ 
+            std::cout << __LOG_MSG << std::endl; 
+            std::cout.flush(); 
+        }); 
+}
+
 };

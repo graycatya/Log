@@ -1,3 +1,0 @@
-D:/code/Log/CatLog/CMakeFiles/CatLog_Sington.dir
-D:/code/Log/CatLog/CMakeFiles/edit_cache.dir
-D:/code/Log/CatLog/CMakeFiles/rebuild_cache.dir

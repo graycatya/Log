@@ -1,81 +1,61 @@
-# Log version: CatLog_0.2
+Log version: CatLog_Sington 1.0.0.0
+=======
+
+
+
 
 ```
-#include "CatLog.h"
 #include <iostream>
-#include <thread>
+#include <functional>
+#include "../CatLog/CatLog_Sington.h"
+
+#define NUM 10000
+
+using namespace CATLOG;
+
 int main()
 {
-
-    CatLog* Logs = CatLog::Instance();
-    CatLog::InIt_Consumer_Thread("main", CatLog::WRITE_FILE);
-    CatLog::InIt_Consumer_Thread("demo", CatLog::WRITE_FILE);
-    CatLog::InIt_Consumer_Thread("cat", CatLog::WRITE_FILE);
-    CatLog::InIt_Consumer_Thread("bbq", CatLog::WRITE_FILE);
-    CatLog::InIt_Consumer_Thread("bbc", CatLog::WRITE_FILE);
-    CatLog::InIt_Consumer_Thread("break", CatLog::PRINTF);
-    std::thread th([](){
-        for(int i = 0; i < 1000; i++)
+    CatLog::Instance();
+    std::thread thread_test_0([]{
+        for(int i = 0; i < NUM; i++)
         {
-            CatLog* Logs = CatLog::Instance();
-            Logs->AddLog_Detailed("main", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CATLOG::__Write_Log("./test0",__DEBUG_LOG("log: " + std::to_string(i)));
         }
     });
-    
-    std::thread thdemo([](){
-        for(int i = 0; i < 1000; i++)
+    std::thread thread_test_1([]{
+        for(int i = 0; i < NUM; i++)
         {
-            CatLog* Logs = CatLog::Instance();
-            Logs->AddLog_Detailed("demo", CatLog::LEVEL_ALARM,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CATLOG::__Write_Log("./test1",__INFO_LOG("log: " + std::to_string(i)));
         }
     });
-    
-    std::thread thcat([](){
-        for(int i = 0; i < 1000; i++)
+    std::thread thread_test_2([]{
+        for(int i = 0; i < NUM; i++)
         {
-            CatLog* Logs = CatLog::Instance();
-            Logs->AddLog_Detailed("cat", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CATLOG::__Write_Log("./test2",_DEBUG_LOG("log: " + std::to_string(i)));
         }
     });
-
-    std::thread thbbq([](){
-        for(int i = 0; i < 1000; i++)
+    std::thread thread_test_3([]{
+        for(int i = 0; i < NUM; i++)
         {
-            CatLog* Logs = CatLog::Instance();
-            Logs->AddLog_Detailed("bbq", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CATLOG::__Write_Log(__WARN_LOG("log: " + std::to_string(i)));
         }
     });
-
-    std::thread thbbc([](){
-        for(int i = 0; i < 1000; i++)
+    std::thread thread_test_4([]{
+        for(int i = 0; i < NUM; i++)
         {
-            CatLog* Logs = CatLog::Instance();
-            Logs->AddLog_Detailed("bbc", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
+            CATLOG::__Write_Log("./test4", __ALARM_LOG("log: " + std::to_string(i)));
         }
     });
-
-    std::thread thbreak([](){
-        for(int i = 0; i < 1000; i++)
-        {
-            CatLog* Logs = CatLog::Instance();
-            Logs->AddLog_Detailed("break", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this thread log %d %s", i, "...");
-        }
-    });
-    
-    for(int i = 0; i < 1000; i++)
+    for(int i = 0; i < NUM; i++)
     {
-        Logs->AddLog_Detailed("main", CatLog::LEVEL_DEBUG,  __FILE__, __FUNCTION__, __LINE__, "CATLOG this log %d %s", i, "...");
+        CATLOG::__Write_Log(_INFO_LOG("log: " + std::to_string(i)));
     }
-    
-
-    th.join();
-    thdemo.join();
-    thcat.join();
-    thbbq.join();
-    thbbc.join();
-    thbreak.join();
+    thread_test_0.join();
+    thread_test_1.join();
+    thread_test_2.join();
+    thread_test_3.join();
+    thread_test_4.join();
     CatLog::Delete();
-
     return 0;
 }
 ```

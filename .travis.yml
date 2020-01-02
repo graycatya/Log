@@ -10,7 +10,6 @@ addons:
   apt:
     packages:
     - python3-pip
-    - openssh-server
     - cmake 
     - make 
 
@@ -27,6 +26,11 @@ install:
 
 script:
   # Basic role syntax check
+  - cd Test 
+  - cmake . 
+  - make -j2
+  - cd Bin 
+  - ./demo 
   - ls
 
 notifications:
