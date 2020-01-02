@@ -58,7 +58,6 @@ class CatLog
                 }
                 m_bThreadStop = true;
             }
-            //std::this_thread::sleep_for(std::chrono::milliseconds(200));
             m_pCondition->notify_one();
             m_pConsumer_Thread->join();
             if(m_pConsumer_Thread != nullptr)

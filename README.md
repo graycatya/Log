@@ -1,61 +1,75 @@
 Log version: CatLog_Sington 1.0.0.0
 =======
+
 [![Build Status](https://travis-ci.org/graycatya/Log.svg?branch=master)](https://travis-ci.org/graycatya/Log)
 
+* 轻量级C++ Log模块
 
+Requirements
+=======
+
+* C++11 新特性
+
+目录结构
+======= 
 
 ```
-#include <iostream>
-#include <functional>
-#include "../CatLog/CatLog_Sington.h"
+.
+├── CatLog
+│   ├── CatLog_Message.hpp
+│   ├── CatLog_Sington.cpp
+│   ├── CatLog_Sington.h
+│   └── CMakeLists.txt
+├── README.md
+└── Test
+    ├── CMakeLists.txt
+    └── test.cpp
+```
+1.  CatLog文件夹为日志模块实现
 
-#define NUM 10000
+```
+#Linux下生成库文件(会生成Lib目录)
+cmake .
+make -j2
 
-using namespace CATLOG;
+#windows下生成库文件(会生成Lib目录)
+cmake -G "MinGW Makefile"
+make -j2
+```
 
-int main()
-{
-    CatLog::Instance();
-    std::thread thread_test_0([]{
-        for(int i = 0; i < NUM; i++)
-        {
-            CATLOG::__Write_Log("./test0",__DEBUG_LOG("log: " + std::to_string(i)));
-        }
-    });
-    std::thread thread_test_1([]{
-        for(int i = 0; i < NUM; i++)
-        {
-            CATLOG::__Write_Log("./test1",__INFO_LOG("log: " + std::to_string(i)));
-        }
-    });
-    std::thread thread_test_2([]{
-        for(int i = 0; i < NUM; i++)
-        {
-            CATLOG::__Write_Log("./test2",_DEBUG_LOG("log: " + std::to_string(i)));
-        }
-    });
-    std::thread thread_test_3([]{
-        for(int i = 0; i < NUM; i++)
-        {
-            CATLOG::__Write_Log(__WARN_LOG("log: " + std::to_string(i)));
-        }
-    });
-    std::thread thread_test_4([]{
-        for(int i = 0; i < NUM; i++)
-        {
-            CATLOG::__Write_Log("./test4", __ALARM_LOG("log: " + std::to_string(i)));
-        }
-    });
+2. Test为案例代码
+```
+#Linux下生成库文件(会生成Bin目录)
+cmake .
+make -j2
+
+#windows下生成库文件(会生成Bin目录)
+cmake -G "MinGW Makefile"
+make -j2
+```
+
+Example
+======
+
+```
+//声明CatLog对象
+CatLog::Instance();
+
+//lambda + 线程使用方式
+std::thread thread_test_0([]{
     for(int i = 0; i < NUM; i++)
     {
-        CATLOG::__Write_Log(_INFO_LOG("log: " + std::to_string(i)));
+        //在线程中将日志写入文件中
+        CATLOG::__Write_Log("./test0",__DEBUG_LOG("log: " + std::to_string(i)));
     }
-    thread_test_0.join();
-    thread_test_1.join();
-    thread_test_2.join();
-    thread_test_3.join();
-    thread_test_4.join();
-    CatLog::Delete();
-    return 0;
-}
+});
+thread_test_0.join();
+
+//在程序结束时需要释放CatLog日志模块避免造成内存泄漏
+CatLog::Delete();
+
 ```
+
+Author Information
+=======
+This role was created in 2019 by [graycatya](https://github.com/graycatya)
