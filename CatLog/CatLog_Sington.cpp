@@ -8,5 +8,5 @@ std::mutex* CatLog::m_pConsumer_Mutex = new std::mutex;
 std::condition_variable * CatLog::m_pCondition = new std::condition_variable;
 std::thread* CatLog::m_pConsumer_Thread = nullptr;
 std::queue<std::function<void()>> *CatLog::m_pLogMsg = new std::queue<std::function<void()>>;
-bool CatLog::m_bThreadStop = false;
+bool CatLog::m_bThreadStop = true;
 

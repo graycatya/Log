@@ -56,5 +56,6 @@ int main()
     thread_test_4.join();
     thread_test_5.join();
     CatLog::Delete();
+    CATLOG::__Write_Log(_INFO_LOG("log: " + std::to_string(0)));
     return 0;
 }

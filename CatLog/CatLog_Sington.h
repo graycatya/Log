@@ -17,7 +17,7 @@ namespace CATLOG
 class CatLog
 {
     public:
-        static CatLog* Instance()
+        static CatLog* Instance() noexcept
         {
             if(_instance == nullptr)
             {
@@ -25,6 +25,7 @@ class CatLog
                 if(_instance == nullptr)
                 {
                     _instance = new CatLog();
+                    m_bThreadStop = false;
 
                     m_pConsumer_Thread = new std::thread([]{
                         while(!m_bThreadStop)
@@ -93,8 +94,12 @@ class CatLog
         }
 
         template<class F, class... Args>
-        static void enqueue(F&& f, Args&&... args) noexcept
+        static void enqueue(F&& f, Args&&... args)
         {
+            if(m_bThreadStop)
+            {
+                throw std::runtime_error("enqueue on stopped CatLog");
+            }
             auto task = std::bind(std::forward<F>(f), std::forward<Args>(args)...);
             {
                 std::unique_lock<std::mutex>lock(*m_pConsumer_Mutex);
