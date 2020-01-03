@@ -125,7 +125,7 @@ class CatLog
 };
 
 
-void __Write_Log(std::string&& __FILE_PATH, std::string&& __LOG_MSG)
+void __Write_Log(std::string&& __FILE_PATH, std::string&& __LOG_MSG) noexcept
 {
         CatLog::enqueue([__FILE_PATH, __LOG_MSG](){ 
             std::string file_path = __FILE_PATH + ".log"; 
@@ -136,7 +136,7 @@ void __Write_Log(std::string&& __FILE_PATH, std::string&& __LOG_MSG)
         }); 
 }
 
-void __Write_Log(std::string&& __LOG_MSG)
+void __Write_Log(std::string&& __LOG_MSG) noexcept
 {
         CatLog::enqueue([__LOG_MSG](){ 
             std::cout << __LOG_MSG << std::endl; 
