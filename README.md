@@ -4,6 +4,7 @@ Log version: CatLog_Sington 1.0.0.0
 [![Build Status](https://travis-ci.org/graycatya/Log.svg?branch=master)](https://travis-ci.org/graycatya/Log)
 
 * 轻量级C++ Log模块
+* 单例模式+多生产者-单消费者模型
 * 支持线程安全
 * 内部提供打印模块实现(该模块支持在Qt中使用)
 * 内部提供写文件模块该模块可将日志写入文件(支持线程安全,多文件写日志)
