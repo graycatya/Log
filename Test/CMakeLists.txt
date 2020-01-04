@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 project(demo)
 
 add_definitions("-Wall -g")
-add_definitions(-std=c++11)
+add_definitions(-std=c++17)
 link_libraries(pthread)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/Bin)

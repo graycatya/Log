@@ -5,7 +5,7 @@ project(CatLog_Sington)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Lib)
 
 add_definitions("-Wall -g")
-add_definitions(-std=c++11)
+add_definitions(-std=c++17)
 link_libraries(pthread)
 
 aux_source_directory(. DIR_LIB_SRCS)

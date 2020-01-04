@@ -51,43 +51,43 @@ class CatLog
 
         static void Delete( void ) noexcept
         {
-            {
-                std::unique_lock<std::mutex> lock(*m_pMutex);
-                while(!m_pLogMsg->empty())
-                {
-                    m_pCondition->notify_one();
-                }
-                m_bThreadStop = true;
-            }
-            m_pCondition->notify_one();
-            m_pConsumer_Thread->join();
-            if(m_pConsumer_Thread != nullptr)
-            {
-                delete m_pConsumer_Thread;
-                m_pConsumer_Thread = nullptr;
-            }
-            if(m_pMutex != nullptr)
-            {
-                delete m_pMutex;
-                m_pMutex = nullptr;
-            }
-            if(m_pConsumer_Mutex != nullptr)
-            {
-                delete m_pConsumer_Mutex;
-                m_pConsumer_Mutex = nullptr;
-            }
-            if(m_pCondition != nullptr)
-            {
-                delete m_pCondition;
-                m_pCondition = nullptr;
-            }
-            if(m_pLogMsg != nullptr)
-            {
-                delete m_pLogMsg;
-                m_pLogMsg = nullptr;
-            }
             if(_instance != nullptr)
             {
+                if(m_pConsumer_Thread != nullptr)
+                {
+                    {
+                        std::unique_lock<std::mutex> lock(*m_pMutex);
+                        while(!m_pLogMsg->empty())
+                        {
+                            m_pCondition->notify_one();
+                        }
+                        m_bThreadStop = true;
+                    }
+                    m_pCondition->notify_one();
+                    m_pConsumer_Thread->join();
+                    delete m_pConsumer_Thread;
+                    m_pConsumer_Thread = nullptr;
+                }
+                if(m_pMutex != nullptr)
+                {
+                    delete m_pMutex;
+                    m_pMutex = nullptr;
+                }
+                if(m_pConsumer_Mutex != nullptr)
+                {
+                    delete m_pConsumer_Mutex;
+                    m_pConsumer_Mutex = nullptr;
+                }
+                if(m_pCondition != nullptr)
+                {
+                    delete m_pCondition;
+                    m_pCondition = nullptr;
+                }
+                if(m_pLogMsg != nullptr)
+                {
+                    delete m_pLogMsg;
+                    m_pLogMsg = nullptr;
+                }
                 delete _instance;
                 _instance = nullptr;
             }
