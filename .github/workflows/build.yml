@@ -12,7 +12,7 @@ jobs:
     - name: install cmake make 
       run: sudo apt install cmake
     - name: make
-      run: cd Test/ && cmake .
+      run: cd Test/ && cmake . && make -j2
     - name: run
       run: ./Test/Bin/demo
     - name: ls
