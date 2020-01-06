@@ -11,8 +11,9 @@ jobs:
     - uses: actions/checkout@v1
     - name: install cmake make 
       run: sudo apt install cmake
-    - name: cmake 
-      run: cd CatLog/ & cmake .
-    - name: make
-      run: make -j2
+    - name: CatLog
+      run: cd CatLog
+    - name: ls
+      run: ls 
+
 
