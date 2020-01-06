@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: graycatya/Log
+    - uses: actions/checkout@v1
     - name: install cmake make 
       run: sudo apt install cmake
     - name: cmake 
