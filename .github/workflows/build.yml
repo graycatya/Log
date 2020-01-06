@@ -1,0 +1,18 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: graycatya/Log
+    - name: install cmake make 
+      run: sudo apt install cmake
+    - name: cmake 
+      run: cd CatLog/ & cmake .
+    - name: make
+      run: make -j2
+
