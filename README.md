@@ -1,4 +1,4 @@
-Log version: CatLog_Sington 1.0.0.0
+Log version: CatLog_Sington 1.0.1
 =======
 
 [![Build Status](https://travis-ci.org/graycatya/Log.svg?branch=master)](https://travis-ci.org/graycatya/Log)
@@ -9,6 +9,7 @@ Log version: CatLog_Sington 1.0.0.0
 * 内部提供打印模块实现(该模块支持在Qt中使用)
 * 内部提供写文件模块该模块可将日志写入文件(支持线程安全,多文件写日志)
 * 日志模块内部提供Log数据头实现(获取时间,文件路径,函数名,触发日志所在行)
+* 跨平台Windows，linux，macos
 
 Requirements
 =======
@@ -65,7 +66,7 @@ std::thread thread_test_0([]{
     for(int i = 0; i < NUM; i++)
     {
         //在线程中将日志写入文件中
-        CATLOG::__Write_Log("./test0",__DEBUG_LOG("log: " + std::to_string(i)));
+        CATLOG::CatLog::__Write_Log("./test0",__DEBUG_LOG("log: " + std::to_string(i)));
     }
 });
 thread_test_0.join();
