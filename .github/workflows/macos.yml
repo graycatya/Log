@@ -1,0 +1,64 @@
+name: MacOS
+on: 
+  # push代码时触发workflow
+  push:
+    paths:
+      - 'CatLog/**'
+      - '.github/workflows/macos.yml'
+      - 'CatLog.pro'
+  # pull_request时触发workflow
+  pull_request:
+    paths:
+      - 'CatLog/**'
+      - '.github/workflows/macos.yml'   
+      - 'CatLog.pro'     
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-10.15]
+        qt_ver: [5.15.2]
+        qt_arch: [clang_64]
+    steps: 
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2.10.0
+        with:
+          version: ${{ matrix.qt_ver }}
+          cached: 'false'
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: build macos
+        run: |
+          qmake
+          make
+      #- name: tree 
+      #  run: |
+      #    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+      #    brew install tree
+      #    tree
+      # tag 打包
+      #- name: package
+      #  run: |
+          # 拷贝依赖
+      #    macdeployqt ${projectName}/${targetName}.app -qmldir=. -verbose=1 -dmg
+      #- name: pwd-dir
+      #  run: |
+      #    pwd
+      # 上传artifacts          
+      #- uses: actions/upload-artifact@v2
+      #  with:
+      #    name: ${{ env.targetName }}_${{matrix.qt_ver}}.zip
+      #    path: ${{ env.projectName }}/${{ env.targetName }}.app
+      # tag 上传Release
+      #- name: uploadRelease
+      #  if: startsWith(github.event.ref, 'refs/tags/')
+      #  uses: svenstaro/upload-release-action@v2
+      #  with:
+      #    repo_token: ${{ secrets.GITHUB_TOKEN }}
+      #    file: ${{ env.projectName }}/${{ env.targetName }}.dmg
+      #    asset_name: ${{ env.targetName }}_${{ matrix.os }}_${{ matrix.qt_ver }}.dmg
+      #    tag: ${{ github.ref }}
+      #    overwrite: true
